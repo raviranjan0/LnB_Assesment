@@ -1,0 +1,166 @@
+
+1. What is Express.js and why is it used? How do you install Express.js in a Node.js project?
+
+        Ans:-
+        Express.js is a fast, and minimalist web framework for Node.js, ideal for building web applications and APIs12. It simplifies handling HTTP requests and is part of the MERN stack.
+        
+        To install Express.js in a Node.js project, you can use npm (Node Package Manager), which is bundled with Node.js. Here are the steps:-
+        -->Navigate to your project directory in the terminal.
+        -->Run the following command to initialize a new Node.js project 
+            npm init -y
+        -->Install Express.js by running the following command:
+            npm install express
+        -->Once installed, you can start using Express.js in your Node.js project by requiring it in your JavaScript files:
+            const express = require('express');
+            const app = express();
+#################################################################
+2. How do you create a simple Express.js server?
+        Ans:-
+         -->First, install Express using npm (Node Package Manager):
+         npm install express
+        -->Create an Express Application: Create an index.js file (or any other name you prefer) and add the following code:
+
+          const express = require('express');
+          const app = express();
+
+          // Define a route handler for the root path
+          app.get('/', (req, res) => {
+              res.send('Hi there');
+          });
+
+          // Start the server on port 3000
+          app.listen(3000, () => {
+              console.log('Server is listening on port 3000...');
+          });
+        -->Run the Server: Open your terminal, navigate to the project directory, and run:
+        node index.js
+############################################################
+
+3. What is a RESTful API? How do you set up a basic Express.js server for a RESTful API?
+         Ans:-
+         What is a RESTful API?
+            -->A RESTful API (also known as a REST API or RESTful web API) adheres to the design principles of the representational state transfer (REST) architectural style.
+            -->It allows different computer systems to communicate securely over the internet by following a set of rules for how that communication should take place.
+           --> RESTful APIs use standardized formats (such as JSON or XML) for requests and responses, enabling seamless interaction between applications.
+            -->Setting Up a Basic Express.js Server for a RESTful API:
+              First, make sure you have Node.js installed on your system.
+              Then, follow these steps to create a simple Express.js server for a RESTful API:
+             
+             // 1. Install Express.js (if not already done)
+            //    Run: npm install express
+
+            // 2. Create an Express server
+            const express = require('express');
+            const app = express();
+            const port = 3000;
+
+            // 3. Define a route (e.g., for the root path '/')
+            app.get('/', (req, res) => {
+                res.send('Hello, RESTful API!');
+            });
+
+            // 4. Start the server
+            app.listen(port, () => {
+                console.log(`Server is listening at http://localhost:${port}`);
+            });
+####################################################################
+
+4. Which HTTP methods are commonly used in RESTful APIs, and what are they typically used for?
+          Ans:-GET:
+                    Purpose: Retrieve data from a resource (read-only).
+                    Safe Method: Does not modify the resource’s state.
+                    Idempotent: Repeating the same GET request produces the same result.
+                    Example URIs:
+                    Get all users
+                    Get paginated users
+                    Get user with ID 123
+                    Get address of user 123
+              POST:
+                    Purpose: Create a new subordinate resource.
+                    Not Safe or Idempotent: Invoking identical POST requests creates different resources.
+                    Response Codes: Ideally, returns HTTP 201 (Created) with a new resource and a Location header.
+                    Example: Creating a new order.
+              PUT (or PATCH):
+                    Purpose: Update an existing resource.
+                    Not Safe or Idempotent: Modifies the resource.
+                    Example: Updating user details or replacing a resource.
+              DELETE:
+                    Purpose: Delete an existing resource.
+                    Not Safe or Idempotent: Removes the resource.
+                    Example: Deleting a user.
+#######################################################
+5. What is an error-handling middleware in Express.js? How do you define an error-handling middleware in Express.js?
+          Ans:-
+          In Express.js, an error-handling middleware is a function that handles errors occurring during the request-response cycle. It’s essential for gracefully managing unexpected situations. Here’s how you define an error-handling middleware:
+         
+         1.Function Signature:
+            ---Error-handling middleware functions have four parameters: err, req, res, and next.
+            ---They are defined in the same way as other middleware functions, but with these additional parameters.
+           
+           app.use((err, req, res, next) => {
+              console.error(err.stack); // Log the error
+              res.status(500).send('Something went wrong!');
+               // Respond with an error message
+            });
+
+#############################################################
+6. How do you create a centralized error-handling mechanism in Express.js?
+           Ans:-
+           ---Create a Custom Error Constructor:
+                // helpers/error.js
+                  class ErrorHandler extends Error {
+                      constructor(statusCode, message) {
+                          super();
+                          this.statusCode = statusCode;
+                          this.message = message;
+                      }
+                  }
+
+                  module.exports = { ErrorHandler };
+            ---Add a Function for Handling Errors:
+                const handleError = (err, res) => {
+                    const { statusCode, message } = err;
+                    res.status(statusCode).json({ status: "error", statusCode, message });
+                };
+
+                module.exports = { ErrorHandler, handleError };
+            ---Use the Error-Handling Middleware:
+                const express = require('express');
+                const app = express();
+
+                // Other middleware and routes...
+
+                // Error-handling middleware
+                app.use((err, req, res, next) => {
+                    const errorStatus = err.statusCode || 500;
+                    const errorMessage = err.message || "Something went wrong. Try again!";
+                    res.status(errorStatus).json({ status: "error", message: errorMessage });
+                });
+
+                // Start the server
+                const port = process.env.PORT || 3000;
+                app.listen(port, () => {
+                    console.log(`Server is listening on port ${port}`);
+                });
+
+###########################################################
+
+7. How do you handle POST requests in Express.js?
+            Ans:-
+            ---To handle a POST request, use the app.post() method in your Express app.
+
+            const express = require('express');
+            const app = express();
+
+            // Handle POST requests to the root path '/'
+            app.post('/', (req, res) => {
+                res.send('Hello, World!');
+            });
+
+            // Start the server
+            const server = app.listen(3000, () => {
+                console.log('Server is listening on port 3000');
+            });
+
+            
+ 
